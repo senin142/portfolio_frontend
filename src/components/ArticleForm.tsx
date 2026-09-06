@@ -2,6 +2,11 @@
 
 import { FormEvent, useState } from 'react';
 import { Article, ArticleInput } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function ArticleForm({
   initial,
@@ -39,63 +44,53 @@ export default function ArticleForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700">Slug</label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="slug">Slug</Label>
+        <Input
+          id="slug"
           required
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           placeholder="my-article-slug"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-mono"
+          className="font-mono"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700">Title</label>
-        <input
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
+      <div className="space-y-1.5">
+        <Label htmlFor="title">Title</Label>
+        <Input id="title" required value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700">Body</label>
-        <textarea
-          required
-          rows={12}
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
+      <div className="space-y-1.5">
+        <Label htmlFor="body">Body</Label>
+        <Textarea id="body" required rows={12} value={body} onChange={(e) => setBody(e.target.value)} />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700">Tags</label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="tags">Tags</Label>
+        <Input
+          id="tags"
           value={tagsText}
           onChange={(e) => setTagsText(e.target.value)}
           placeholder="product, announcements"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
         />
-        <p className="mt-1 text-xs text-slate-400">Comma-separated. Powers "similar articles" on the public site.</p>
+        <p className="text-xs text-muted-foreground">
+          Comma-separated. Powers &quot;similar articles&quot; on the public site.
+        </p>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-slate-700">
-        <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
-        Published
-      </label>
+      <div className="flex items-center gap-2">
+        <Checkbox id="published" checked={published} onCheckedChange={(c) => setPublished(c === true)} />
+        <Label htmlFor="published" className="cursor-pointer font-normal">
+          Published
+        </Label>
+      </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
-      >
+      <Button type="submit" disabled={submitting}>
         {submitting ? 'Saving…' : submitLabel}
-      </button>
+      </Button>
     </form>
   );
 }
