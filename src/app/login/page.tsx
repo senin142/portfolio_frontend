@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
+import PortfolioNote from '@/components/PortfolioNote';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -26,7 +27,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-4">
+      <div className="fixed inset-x-0 top-0"><PortfolioNote /></div>
       <form onSubmit={handleSubmit} className="card w-full max-w-sm space-y-4 p-7">
         <div className="mb-1 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-brand-light shadow-[0_0_8px_rgba(79,214,196,0.7)]" />

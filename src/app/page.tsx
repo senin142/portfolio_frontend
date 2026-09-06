@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import { api } from '@/lib/api';
 import { PublicArticle, Tag } from '@/lib/types';
+import PortfolioNote from '@/components/PortfolioNote';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -52,6 +53,7 @@ export default function PublicHome() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <PortfolioNote />
       <header className="border-b border-line bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <span className="flex items-center gap-2 font-display text-[15px] font-semibold text-ink">
