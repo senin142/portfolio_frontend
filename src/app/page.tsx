@@ -51,29 +51,44 @@ export default function PublicHome() {
   }, [activeTag]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-paper">
+      <header className="border-b border-line bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-          <span className="font-semibold text-slate-900">Content CMS</span>
-          <Link href="/login" className="text-sm text-slate-500 hover:underline">
+          <span className="flex items-center gap-2 font-display text-[15px] font-semibold text-ink">
+            <span className="h-2 w-2 rounded-full bg-brand-light shadow-[0_0_8px_rgba(79,214,196,0.7)]" />
+            Content CMS
+          </span>
+          <Link href="/login" className="text-sm text-ink-muted transition-colors hover:text-brand">
             Admin login
           </Link>
         </div>
       </header>
 
-      {liveNotice && (
-        <div className="bg-emerald-600 px-6 py-2 text-center text-sm font-medium text-white">{liveNotice}</div>
-      )}
+      <div
+        className={`overflow-hidden bg-ink text-white transition-all duration-300 ${
+          liveNotice ? 'max-h-16 py-2.5' : 'max-h-0 py-0'
+        }`}
+      >
+        <p className="text-center font-mono text-xs tracking-wide text-brand-light">
+          <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand-light align-middle" />
+          {liveNotice}
+        </p>
+      </div>
 
-      <main className="mx-auto max-w-3xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-slate-900">Articles</h1>
-        <p className="mt-1 text-sm text-slate-500">Live updates over WebSocket — no refresh needed when something new publishes.</p>
+      <main className="mx-auto max-w-3xl px-6 py-14">
+        <p className="font-mono text-xs uppercase tracking-[0.15em] text-brand">Articles</p>
+        <h1 className="mt-2 font-serif text-4xl font-normal text-ink">What we&rsquo;re publishing</h1>
+        <p className="mt-3 text-sm text-ink-muted">
+          Live updates over WebSocket — no refresh needed when something new publishes.
+        </p>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-7 flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTag(null)}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${
-              activeTag === null ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-300'
+            className={`badge border transition-colors ${
+              activeTag === null
+                ? 'border-ink bg-ink text-white'
+                : 'border-line bg-white text-ink-muted hover:border-ink-dim'
             }`}
           >
             All
@@ -82,8 +97,10 @@ export default function PublicHome() {
             <button
               key={t.id}
               onClick={() => setActiveTag(t.name)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                activeTag === t.name ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-300'
+              className={`badge border transition-colors ${
+                activeTag === t.name
+                  ? 'border-brand bg-brand text-white'
+                  : 'border-line bg-white text-ink-muted hover:border-brand-light hover:text-brand'
               }`}
             >
               {t.name}
@@ -91,23 +108,19 @@ export default function PublicHome() {
           ))}
         </div>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-8 space-y-4">
           {loading ? (
-            <p className="text-sm text-slate-400">Loading…</p>
+            <p className="font-mono text-xs text-ink-dim">Loading…</p>
           ) : articles.length === 0 ? (
-            <p className="text-sm text-slate-400">No articles found.</p>
+            <p className="font-mono text-xs text-ink-dim">No articles found.</p>
           ) : (
             articles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="block rounded-lg border border-slate-200 bg-white p-5 hover:border-slate-400"
-              >
-                <h2 className="font-medium text-slate-900">{article.title}</h2>
-                <p className="mt-1 line-clamp-2 text-sm text-slate-500">{article.body}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
+              <Link key={article.id} href={`/articles/${article.slug}`} className="card group block p-6 transition-shadow hover:shadow-md">
+                <h2 className="font-serif text-xl text-ink transition-colors group-hover:text-brand">{article.title}</h2>
+                <p className="mt-2 line-clamp-2 text-[14.5px] leading-relaxed text-ink-muted">{article.body}</p>
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {article.tags.map((t) => (
-                    <span key={t.id} className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500">
+                    <span key={t.id} className="badge bg-black/[0.04] text-ink-muted">
                       {t.name}
                     </span>
                   ))}

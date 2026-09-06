@@ -29,38 +29,38 @@ function UsersContent() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-paper">
       <Navbar />
-      <main className="mx-auto max-w-3xl px-6 py-8">
-        <h1 className="mb-6 text-2xl font-semibold text-slate-900">Users</h1>
-        {error && <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+      <main className="mx-auto max-w-3xl px-6 py-10">
+        <h1 className="mb-6 text-2xl font-semibold text-ink">Users</h1>
+        {error && <p className="error-banner mb-4">{error}</p>}
+        <div className="card overflow-hidden">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 text-slate-500">
+            <thead className="border-b border-line bg-black/[0.02] text-ink-dim">
               <tr>
-                <th className="px-4 py-2 font-medium">Name</th>
-                <th className="px-4 py-2 font-medium">Email</th>
-                <th className="px-4 py-2 font-medium">Role</th>
-                <th className="px-4 py-2 font-medium"></th>
+                <th className="px-5 py-3 font-medium">Name</th>
+                <th className="px-5 py-3 font-medium">Email</th>
+                <th className="px-5 py-3 font-medium">Role</th>
+                <th className="px-5 py-3 font-medium"></th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b border-slate-100 last:border-0">
-                  <td className="px-4 py-3 font-medium text-slate-900">{user.name}</td>
-                  <td className="px-4 py-3 text-slate-500">{user.email}</td>
-                  <td className="px-4 py-3">
+                <tr key={user.id} className="border-b border-line last:border-0 hover:bg-black/[0.015]">
+                  <td className="px-5 py-3 font-medium text-ink">{user.name}</td>
+                  <td className="px-5 py-3 text-ink-muted">{user.email}</td>
+                  <td className="px-5 py-3">
                     <select
                       value={user.role}
                       onChange={(e) => changeRole(user, e.target.value as Role)}
-                      className="rounded-md border border-slate-300 px-2 py-1 text-xs"
+                      className="rounded-lg border border-line px-2 py-1.5 text-xs focus:border-brand focus:outline-none"
                     >
                       <option value="editor">editor</option>
                       <option value="admin">admin</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <button onClick={() => remove(user)} className="text-xs text-red-600 hover:underline">
+                  <td className="px-5 py-3 text-right">
+                    <button onClick={() => remove(user)} className="text-xs font-medium text-red-500 hover:text-red-600">
                       Delete
                     </button>
                   </td>

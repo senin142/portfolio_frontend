@@ -43,16 +43,16 @@ function DashboardContent() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-paper">
       <Navbar />
-      <main className="mx-auto max-w-5xl px-6 py-8">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-900">Articles</h1>
-          <Link
-            href="/dashboard/articles/new"
-            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          >
-            New article
+      <main className="mx-auto max-w-5xl px-6 py-10">
+        <div className="mb-7 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-ink">Articles</h1>
+            <p className="mt-1 text-sm text-ink-muted">{articles.length} total</p>
+          </div>
+          <Link href="/dashboard/articles/new" className="btn-primary">
+            + New article
           </Link>
         </div>
 
@@ -61,62 +61,72 @@ function DashboardContent() {
             placeholder="Search title…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-64 rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="field-input mt-0 w-64"
           />
         </div>
 
-        {error && <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="error-banner mb-4">{error}</p>}
 
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div className="card overflow-hidden">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 text-slate-500">
+            <thead className="border-b border-line bg-black/[0.02] text-ink-dim">
               <tr>
-                <th className="px-4 py-2 font-medium">Title</th>
-                <th className="px-4 py-2 font-medium">Status</th>
-                <th className="px-4 py-2 font-medium">Author</th>
-                <th className="px-4 py-2 font-medium"></th>
+                <th className="px-5 py-3 font-medium">Title</th>
+                <th className="px-5 py-3 font-medium">Tags</th>
+                <th className="px-5 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 font-medium">Author</th>
+                <th className="px-5 py-3 font-medium"></th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center text-slate-400">
+                  <td colSpan={5} className="px-5 py-8 text-center font-mono text-xs text-ink-dim">
                     Loading…
                   </td>
                 </tr>
               ) : articles.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center text-slate-400">
+                  <td colSpan={5} className="px-5 py-8 text-center font-mono text-xs text-ink-dim">
                     No articles found.
                   </td>
                 </tr>
               ) : (
                 articles.map((article) => (
-                  <tr key={article.id} className="border-b border-slate-100 last:border-0">
-                    <td className="px-4 py-3">
+                  <tr key={article.id} className="border-b border-line last:border-0 hover:bg-black/[0.015]">
+                    <td className="px-5 py-3">
                       <Link
                         href={`/dashboard/articles/${article.id}`}
-                        className="font-medium text-slate-900 hover:underline"
+                        className="font-medium text-ink hover:text-brand"
                       >
                         {article.title}
                       </Link>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {article.tags.map((t) => (
+                          <span key={t.id} className="badge bg-brand-soft text-brand">
+                            {t.name}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3">
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                          article.published ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                        className={`badge ${
+                          article.published ? 'bg-emerald-50 text-emerald-700' : 'bg-black/5 text-ink-muted'
                         }`}
                       >
                         {article.published ? 'Published' : 'Draft'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-500">{article.author?.name}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex justify-end gap-2">
-                        <button onClick={() => togglePublish(article)} className="text-xs text-slate-600 hover:underline">
+                    <td className="px-5 py-3 text-ink-muted">{article.author?.name}</td>
+                    <td className="px-5 py-3">
+                      <div className="flex justify-end gap-3">
+                        <button onClick={() => togglePublish(article)} className="text-xs font-medium text-ink-muted hover:text-brand">
                           {article.published ? 'Unpublish' : 'Publish'}
                         </button>
-                        <button onClick={() => remove(article)} className="text-xs text-red-600 hover:underline">
+                        <button onClick={() => remove(article)} className="text-xs font-medium text-red-500 hover:text-red-600">
                           Delete
                         </button>
                       </div>

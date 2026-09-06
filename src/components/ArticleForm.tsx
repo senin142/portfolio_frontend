@@ -38,62 +38,58 @@ export default function ArticleForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+    <form onSubmit={handleSubmit} className="card space-y-6 p-7">
+      {error && <p className="error-banner">{error}</p>}
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">Slug</label>
+        <label className="field-label">Slug</label>
         <input
           required
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           placeholder="my-article-slug"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-mono"
+          className="field-input font-mono"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">Title</label>
-        <input
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
+        <label className="field-label">Title</label>
+        <input required value={title} onChange={(e) => setTitle(e.target.value)} className="field-input" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">Body</label>
+        <label className="field-label">Body</label>
         <textarea
           required
           rows={12}
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+          className="field-input font-serif text-[15px] leading-relaxed"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">Tags</label>
+        <label className="field-label">Tags</label>
         <input
           value={tagsText}
           onChange={(e) => setTagsText(e.target.value)}
           placeholder="product, announcements"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+          className="field-input"
         />
-        <p className="mt-1 text-xs text-slate-400">Comma-separated. Powers "similar articles" on the public site.</p>
+        <p className="mt-1.5 text-xs text-ink-dim">Comma-separated. Powers "similar articles" on the public site.</p>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-slate-700">
-        <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} />
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <input
+          type="checkbox"
+          checked={published}
+          onChange={(e) => setPublished(e.target.checked)}
+          className="h-4 w-4 rounded border-line text-brand focus:ring-brand-light"
+        />
         Published
       </label>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
-      >
+      <button type="submit" disabled={submitting} className="btn-primary">
         {submitting ? 'Saving…' : submitLabel}
       </button>
     </form>
