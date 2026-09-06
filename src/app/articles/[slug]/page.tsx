@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { PublicArticle } from '@/lib/types';
+import PortfolioNote from '@/components/PortfolioNote';
 
 export default function PublicArticlePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -33,6 +34,7 @@ export default function PublicArticlePage() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <PortfolioNote />
       <header className="border-b border-line bg-white/80 backdrop-blur">
         <div className="mx-auto max-w-2xl px-6 py-4">
           <Link href="/" className="flex items-center gap-2 text-sm text-ink-muted hover:text-brand">

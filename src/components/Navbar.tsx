@@ -2,11 +2,14 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
+import PortfolioNote from './PortfolioNote';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
+    <>
+    <PortfolioNote />
     <nav className="flex items-center justify-between border-b border-line bg-white/80 px-6 py-4 backdrop-blur">
       <div className="flex items-center gap-7">
         <Link href="/dashboard" className="flex items-center gap-2 font-display text-[15px] font-semibold text-ink">
@@ -34,5 +37,6 @@ export default function Navbar() {
         </button>
       </div>
     </nav>
+    </>
   );
 }
