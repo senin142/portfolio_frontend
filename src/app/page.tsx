@@ -78,10 +78,16 @@ export default function PublicHome() {
       </div>
 
       <main className="mx-auto max-w-3xl px-6 py-14">
-        <p className="font-mono text-xs uppercase tracking-[0.15em] text-brand">Articles</p>
+        <p className="font-mono text-xs uppercase tracking-[0.15em] text-brand">Skill demo · by Shubhanshu Pandey</p>
         <h1 className="mt-2 font-serif text-4xl font-normal text-ink">What we&rsquo;re publishing</h1>
-        <p className="mt-3 text-sm text-ink-muted">
-          Live updates over WebSocket — no refresh needed when something new publishes.
+        <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-ink-muted">
+          A small CMS I built to demonstrate role-gated publishing, tag-based content discovery, and
+          real-time updates pushed over WebSocket the moment something publishes — no page refresh.
+          Not a real company;{' '}
+          <a href="https://github.com/senin142/portfolio1.0" target="_blank" rel="noopener" className="font-medium text-brand underline underline-offset-2">
+            see the rest of my portfolio ↗
+          </a>
+          .
         </p>
 
         <div className="mt-7 flex flex-wrap gap-2">
