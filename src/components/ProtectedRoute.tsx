@@ -25,7 +25,7 @@ export default function ProtectedRoute({
   }, [user, loading, allow, router]);
 
   if (loading || !user || (allow && !allow.includes(user.role))) {
-    return <div className="flex h-screen items-center justify-center text-slate-500">Loading…</div>;
+    return <div className="flex h-screen items-center justify-center font-mono text-sm text-ink-dim">Loading…</div>;
   }
 
   return <>{children}</>;

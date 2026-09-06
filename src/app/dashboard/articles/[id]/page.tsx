@@ -27,16 +27,16 @@ function EditArticleContent() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-paper">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-6 py-8">
+      <main className="mx-auto max-w-4xl px-6 py-10">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-900">Edit article</h1>
-          <button onClick={() => router.push('/dashboard')} className="text-sm text-slate-500 hover:underline">
-            Back to articles
+          <h1 className="text-2xl font-semibold text-ink">Edit article</h1>
+          <button onClick={() => router.push('/dashboard')} className="text-sm text-ink-muted hover:text-brand">
+            ← Back to articles
           </button>
         </div>
-        {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="error-banner">{error}</p>}
         {article && (
           <ArticleForm
             initial={article}

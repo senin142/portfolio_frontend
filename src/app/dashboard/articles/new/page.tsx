@@ -16,10 +16,10 @@ function NewArticleContent() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-paper">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-6 py-8">
-        <h1 className="mb-6 text-2xl font-semibold text-slate-900">New article</h1>
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <h1 className="mb-6 text-2xl font-semibold text-ink">New article</h1>
         <ArticleForm onSubmit={handleSubmit} submitLabel="Create article" />
       </main>
     </div>

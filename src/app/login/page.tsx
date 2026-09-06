@@ -26,44 +26,44 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900">Log in</h1>
-        {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+      <form onSubmit={handleSubmit} className="card w-full max-w-sm space-y-4 p-7">
+        <div className="mb-1 flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-brand-light shadow-[0_0_8px_rgba(79,214,196,0.7)]" />
+          <span className="font-mono text-xs uppercase tracking-wider text-ink-dim">Content CMS</span>
+        </div>
+        <h1 className="text-xl font-semibold text-ink">Log in</h1>
+        {error && <p className="error-banner">{error}</p>}
         <div>
-          <label className="block text-sm font-medium text-slate-700">Email</label>
+          <label className="field-label">Email</label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="field-input"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700">Password</label>
+          <label className="field-label">Password</label>
           <input
             type="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="field-input"
           />
         </div>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
-        >
+        <button type="submit" disabled={submitting} className="btn-primary w-full">
           {submitting ? 'Logging in…' : 'Log in'}
         </button>
-        <p className="text-center text-sm text-slate-500">
+        <p className="text-center text-sm text-ink-muted">
           No account?{' '}
-          <Link href="/signup" className="text-slate-900 underline">
+          <Link href="/signup" className="font-medium text-brand underline underline-offset-2">
             Sign up
           </Link>
         </p>
-        <p className="text-center text-xs text-slate-400">
+        <p className="rounded-lg bg-brand-soft px-3 py-2 text-center font-mono text-[11px] text-ink-muted">
           Seeded accounts: admin@example.com / editor@example.com, password123
         </p>
       </form>
