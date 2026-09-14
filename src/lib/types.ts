@@ -36,3 +36,9 @@ export interface ArticleInput {
   published?: boolean;
   tags?: string[];
 }
+
+export interface MediaUsage {
+  usedBytes: number;
+  capBytes: number;
+  percentUsed: number;
+}

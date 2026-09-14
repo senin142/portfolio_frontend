@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 const TOKEN_KEY = 'cms_token';
 
 export function getToken(): string | null {
@@ -47,4 +47,28 @@ export const api = {
   patch: <T>(path: string, body?: unknown) =>
     request<T>(path, { method: 'PATCH', body: body ? JSON.stringify(body) : undefined }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  async uploadImage<T>(articleId: string, file: File, resize: boolean): Promise<T> {
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(`${API_URL}/media/articles/${articleId}?resize=${resize}`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ message: res.statusText }));
+      const message = Array.isArray(body.message) ? body.message.join(', ') : body.message;
+      throw new ApiError(message || 'Upload failed', res.status);
+    }
+    return res.json();
+  },
+  async fetchImage(articleId: string): Promise<Blob | null> {
+    const token = getToken();
+    const res = await fetch(`${API_URL}/media/articles/${articleId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
+    if (!res.ok) return null;
+    return res.blob();
+  },
 };

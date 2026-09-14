@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { api } from '@/lib/api';
+import { api, API_URL } from '@/lib/api';
 import { PublicArticle } from '@/lib/types';
 import PortfolioNote from '@/components/PortfolioNote';
 
@@ -11,6 +11,7 @@ export default function PublicArticlePage() {
   const { slug } = useParams<{ slug: string }>();
   const [article, setArticle] = useState<PublicArticle | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [hasImage, setHasImage] = useState(true);
 
   useEffect(() => {
     api
@@ -45,6 +46,15 @@ export default function PublicArticlePage() {
 
       <main className="mx-auto max-w-2xl px-6 py-14">
         <h1 className="font-serif text-3xl leading-tight text-ink">{article.title}</h1>
+        {hasImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`${API_URL}/public/articles/${slug}/image`}
+            alt={article.title}
+            onError={() => setHasImage(false)}
+            className="mt-5 w-full rounded-lg border border-line object-cover"
+          />
+        )}
         <div className="mt-3 flex flex-wrap gap-1.5">
           {article.tags.map((t) => (
             <Link key={t.id} href={`/?tag=${encodeURIComponent(t.name)}`} className="badge bg-brand-soft text-brand hover:bg-brand hover:text-white">
