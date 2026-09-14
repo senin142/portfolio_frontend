@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { api, clearToken, getToken, setToken } from './api';
+import { api, clearToken, getRefreshToken, getToken, setRefreshToken, setToken } from './api';
 import { AuthUser } from './types';
 
 interface AuthContextValue {
@@ -34,27 +34,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function login(email: string, password: string) {
-    const res = await api.post<{ accessToken: string; user: AuthUser }>('/auth/login', {
+    const res = await api.post<{ accessToken: string; refreshToken: string; user: AuthUser }>('/auth/login', {
       email,
       password,
     });
     setToken(res.accessToken);
+    setRefreshToken(res.refreshToken);
     setUser(res.user);
     router.push('/dashboard');
   }
 
   async function signup(email: string, password: string, name: string) {
-    const res = await api.post<{ accessToken: string; user: AuthUser }>('/auth/signup', {
+    const res = await api.post<{ accessToken: string; refreshToken: string; user: AuthUser }>('/auth/signup', {
       email,
       password,
       name,
     });
     setToken(res.accessToken);
+    setRefreshToken(res.refreshToken);
     setUser(res.user);
     router.push('/dashboard');
   }
 
   function logout() {
+    const refreshToken = getRefreshToken();
+    if (refreshToken) {
+      // Best-effort: revoke server-side so the refresh token can't be reused even if
+      // someone got hold of it. Don't block clearing local state on this succeeding.
+      api.post('/auth/logout', { refreshToken }).catch(() => {});
+    }
     clearToken();
     setUser(null);
     router.push('/login');
