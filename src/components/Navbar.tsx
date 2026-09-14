@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import PortfolioNote from './PortfolioNote';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -10,7 +11,7 @@ export default function Navbar() {
   return (
     <>
     <PortfolioNote />
-    <nav className="flex items-center justify-between border-b border-line bg-white/80 px-6 py-4 backdrop-blur">
+    <nav className="flex items-center justify-between border-b border-line bg-surface/80 px-6 py-4 backdrop-blur">
       <div className="flex items-center gap-7">
         <Link href="/dashboard" className="flex items-center gap-2 font-display text-[15px] font-semibold text-ink">
           <span className="h-2 w-2 rounded-full bg-brand-light shadow-[0_0_8px_rgba(79,214,196,0.7)]" />
@@ -29,6 +30,7 @@ export default function Navbar() {
         <span className="font-mono text-xs text-ink-dim">
           {user?.name} <span className="text-brand">· {user?.role?.toUpperCase()}</span>
         </span>
+        <ThemeToggle />
         <button
           onClick={logout}
           className="rounded-lg border border-line px-3 py-1.5 text-sm text-ink-muted transition-colors hover:border-ink-dim hover:text-ink"

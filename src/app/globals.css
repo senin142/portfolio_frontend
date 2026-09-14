@@ -9,10 +9,36 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Source Serif 4', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  --color-paper: 250 249 246;
+  --color-surface: 255 255 255;
+  --color-ink: 28 31 30;
+  --color-ink-muted: 107 111 106;
+  --color-ink-dim: 154 157 151;
+  --color-line: 230 227 219;
+  --color-brand: 58 168 155;
+  --color-brand-light: 79 214 196;
+  --color-brand-soft: 233 248 245;
+  --color-primary: 28 31 30;
+  --color-primary-fg: 255 255 255;
+}
+
+.dark {
+  --color-paper: 20 23 22;
+  --color-surface: 28 32 31;
+  --color-ink: 231 229 223;
+  --color-ink-muted: 154 161 154;
+  --color-ink-dim: 107 113 107;
+  --color-line: 42 47 46;
+  --color-brand: 79 214 196;
+  --color-brand-light: 111 230 214;
+  --color-brand-soft: 22 48 44;
+  --color-primary: 79 214 196;
+  --color-primary-fg: 12 20 18;
 }
 
 body {
-  @apply bg-paper text-ink font-sans;
+  @apply bg-paper text-ink font-sans transition-colors duration-200;
 }
 
 h1, h2, h3 {
@@ -28,21 +54,21 @@ h1, h2, h3 {
     @apply block text-sm font-medium text-ink;
   }
   .field-input {
-    @apply mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm outline-none transition-shadow focus:border-brand focus:ring-2 focus:ring-brand-light/30;
+    @apply mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink shadow-sm outline-none transition-shadow focus:border-brand focus:ring-2 focus:ring-brand-light/30;
   }
   .btn-primary {
-    @apply rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand disabled:opacity-50;
+    @apply rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg transition-colors hover:bg-brand hover:text-white disabled:opacity-50;
   }
   .btn-ghost {
     @apply rounded-lg border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-ink-dim hover:text-ink;
   }
   .card {
-    @apply rounded-xl2 border border-line bg-white shadow-[0_1px_2px_rgba(28,31,30,0.04)];
+    @apply rounded-xl2 border border-line bg-surface shadow-[0_1px_2px_rgba(28,31,30,0.04)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2)];
   }
   .badge {
     @apply rounded-full px-2.5 py-0.5 text-[11px] font-medium;
   }
   .error-banner {
-    @apply rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700;
+    @apply rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300;
   }
 }

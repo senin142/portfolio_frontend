@@ -224,7 +224,7 @@ function ImageUploader({ articleId }: { articleId: string }) {
       )}
       {usage && (
         <div className="mt-3">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]">
             <div
               className={`h-full rounded-full ${usage.percentUsed > 90 ? 'bg-red-500' : 'bg-brand'}`}
               style={{ width: `${Math.min(100, usage.percentUsed)}%` }}

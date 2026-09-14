@@ -7,6 +7,7 @@ import { io, Socket } from 'socket.io-client';
 import { api } from '@/lib/api';
 import { PublicArticle, Tag } from '@/lib/types';
 import PortfolioNote from '@/components/PortfolioNote';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -54,20 +55,23 @@ export default function PublicHome() {
   return (
     <div className="min-h-screen bg-paper">
       <PortfolioNote />
-      <header className="border-b border-line bg-white/80 backdrop-blur">
+      <header className="border-b border-line bg-surface/80 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <span className="flex items-center gap-2 font-display text-[15px] font-semibold text-ink">
             <span className="h-2 w-2 rounded-full bg-brand-light shadow-[0_0_8px_rgba(79,214,196,0.7)]" />
             Content CMS
           </span>
-          <Link href="/login" className="text-sm text-ink-muted transition-colors hover:text-brand">
-            Admin login
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Link href="/login" className="text-sm text-ink-muted transition-colors hover:text-brand">
+              Admin login
+            </Link>
+          </div>
         </div>
       </header>
 
       <div
-        className={`overflow-hidden bg-ink text-white transition-all duration-300 ${
+        className={`overflow-hidden bg-neutral-950 text-white transition-all duration-300 ${
           liveNotice ? 'max-h-16 py-2.5' : 'max-h-0 py-0'
         }`}
       >
@@ -95,8 +99,8 @@ export default function PublicHome() {
             onClick={() => setActiveTag(null)}
             className={`badge border transition-colors ${
               activeTag === null
-                ? 'border-ink bg-ink text-white'
-                : 'border-line bg-white text-ink-muted hover:border-ink-dim'
+                ? 'border-primary bg-primary text-primary-fg'
+                : 'border-line bg-surface text-ink-muted hover:border-ink-dim'
             }`}
           >
             All
@@ -108,7 +112,7 @@ export default function PublicHome() {
               className={`badge border transition-colors ${
                 activeTag === t.name
                   ? 'border-brand bg-brand text-white'
-                  : 'border-line bg-white text-ink-muted hover:border-brand-light hover:text-brand'
+                  : 'border-line bg-surface text-ink-muted hover:border-brand-light hover:text-brand'
               }`}
             >
               {t.name}
@@ -128,7 +132,7 @@ export default function PublicHome() {
                 <p className="mt-2 line-clamp-2 text-[14.5px] leading-relaxed text-ink-muted">{article.body}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {article.tags.map((t) => (
-                    <span key={t.id} className="badge bg-black/[0.04] text-ink-muted">
+                    <span key={t.id} className="badge bg-black/[0.04] text-ink-muted dark:bg-white/[0.08]">
                       {t.name}
                     </span>
                   ))}

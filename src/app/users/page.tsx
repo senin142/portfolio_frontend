@@ -36,7 +36,7 @@ function UsersContent() {
         {error && <p className="error-banner mb-4">{error}</p>}
         <div className="card overflow-hidden">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-line bg-black/[0.02] text-ink-dim">
+            <thead className="border-b border-line bg-black/[0.02] text-ink-dim dark:bg-white/[0.04]">
               <tr>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Email</th>
@@ -46,7 +46,7 @@ function UsersContent() {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b border-line last:border-0 hover:bg-black/[0.015]">
+                <tr key={user.id} className="border-b border-line last:border-0 hover:bg-black/[0.015] dark:hover:bg-white/[0.03]">
                   <td className="px-5 py-3 font-medium text-ink">{user.name}</td>
                   <td className="px-5 py-3 text-ink-muted">{user.email}</td>
                   <td className="px-5 py-3">
