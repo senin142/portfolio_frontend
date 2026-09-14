@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { ApiError } from '@/lib/api';
 import PortfolioNote from '@/components/PortfolioNote';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function SignupPage() {
   const { signup } = useAuth();
@@ -30,6 +31,7 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-4">
       <div className="fixed inset-x-0 top-0"><PortfolioNote /></div>
+      <div className="fixed right-4 top-14"><ThemeToggle /></div>
       <form onSubmit={handleSubmit} className="card w-full max-w-sm space-y-4 p-7">
         <h1 className="text-xl font-semibold text-ink">Sign up</h1>
         <p className="text-sm text-ink-muted">New accounts are created as editors. An admin can promote you later.</p>

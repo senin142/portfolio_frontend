@@ -63,7 +63,7 @@ function DashboardContent() {
 
         {usage && (
           <div className="mb-6 max-w-xs">
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]">
               <div
                 className={`h-full rounded-full ${usage.percentUsed > 90 ? 'bg-red-500' : 'bg-brand'}`}
                 style={{ width: `${Math.min(100, usage.percentUsed)}%` }}
@@ -89,7 +89,7 @@ function DashboardContent() {
 
         <div className="card overflow-hidden">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-line bg-black/[0.02] text-ink-dim">
+            <thead className="border-b border-line bg-black/[0.02] text-ink-dim dark:bg-white/[0.04]">
               <tr>
                 <th className="px-5 py-3 font-medium">Title</th>
                 <th className="px-5 py-3 font-medium">Tags</th>
@@ -113,7 +113,7 @@ function DashboardContent() {
                 </tr>
               ) : (
                 articles.map((article) => (
-                  <tr key={article.id} className="border-b border-line last:border-0 hover:bg-black/[0.015]">
+                  <tr key={article.id} className="border-b border-line last:border-0 hover:bg-black/[0.015] dark:hover:bg-white/[0.03]">
                     <td className="px-5 py-3">
                       <Link
                         href={`/dashboard/articles/${article.id}`}
@@ -134,7 +134,9 @@ function DashboardContent() {
                     <td className="px-5 py-3">
                       <span
                         className={`badge ${
-                          article.published ? 'bg-emerald-50 text-emerald-700' : 'bg-black/5 text-ink-muted'
+                          article.published
+                            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
+                            : 'bg-black/5 text-ink-muted dark:bg-white/[0.06]'
                         }`}
                       >
                         {article.published ? 'Published' : 'Draft'}

@@ -1,6 +1,11 @@
 import type { Config } from 'tailwindcss';
 
+function themeColor(name: string) {
+  return `rgb(var(${name}) / <alpha-value>)`;
+}
+
 const config: Config = {
+  darkMode: 'class',
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
@@ -12,17 +17,22 @@ const config: Config = {
         arabic: ['Tahoma', 'Segoe UI', 'Arial', 'sans-serif'],
       },
       colors: {
-        paper: '#faf9f6',
+        paper: themeColor('--color-paper'),
+        surface: themeColor('--color-surface'),
         ink: {
-          DEFAULT: '#1c1f1e',
-          muted: '#6b6f6a',
-          dim: '#9a9d97',
+          DEFAULT: themeColor('--color-ink'),
+          muted: themeColor('--color-ink-muted'),
+          dim: themeColor('--color-ink-dim'),
         },
-        line: '#e6e3db',
+        line: themeColor('--color-line'),
         brand: {
-          DEFAULT: '#3aa89b',
-          light: '#4fd6c4',
-          soft: '#e9f8f5',
+          DEFAULT: themeColor('--color-brand'),
+          light: themeColor('--color-brand-light'),
+          soft: themeColor('--color-brand-soft'),
+        },
+        primary: {
+          DEFAULT: themeColor('--color-primary'),
+          fg: themeColor('--color-primary-fg'),
         },
       },
       borderRadius: {
