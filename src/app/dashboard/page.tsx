@@ -5,13 +5,18 @@ import Link from 'next/link';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Navbar from '@/components/Navbar';
 import { api } from '@/lib/api';
-import { Article } from '@/lib/types';
+import { Article, MediaUsage } from '@/lib/types';
 
 function DashboardContent() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [usage, setUsage] = useState<MediaUsage | null>(null);
+
+  useEffect(() => {
+    api.get<MediaUsage>('/media/usage').then(setUsage).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -55,6 +60,21 @@ function DashboardContent() {
             + New article
           </Link>
         </div>
+
+        {usage && (
+          <div className="mb-6 max-w-xs">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+              <div
+                className={`h-full rounded-full ${usage.percentUsed > 90 ? 'bg-red-500' : 'bg-brand'}`}
+                style={{ width: `${Math.min(100, usage.percentUsed)}%` }}
+              />
+            </div>
+            <p className="mt-1 text-xs text-ink-dim">
+              Image storage: {(usage.usedBytes / 1024 / 1024).toFixed(1)}MB / {(usage.capBytes / 1024 / 1024).toFixed(0)}MB
+              {' '}({usage.percentUsed}%)
+            </p>
+          </div>
+        )}
 
         <div className="mb-4 flex flex-wrap gap-3">
           <input
