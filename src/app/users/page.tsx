@@ -5,6 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import Navbar from '@/components/Navbar';
 import { api } from '@/lib/api';
 import { AuthUser, Role } from '@/lib/types';
+import { daysRemainingUntilAutoDeletion } from '@/lib/pending-account';
 
 function UsersContent() {
   const [users, setUsers] = useState<AuthUser[]>([]);
@@ -46,6 +47,7 @@ function UsersContent() {
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Email</th>
                 <th className="px-5 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 font-medium">Last login</th>
                 <th className="px-5 py-3 font-medium">Role</th>
                 <th className="px-5 py-3 font-medium"></th>
               </tr>
@@ -57,14 +59,24 @@ function UsersContent() {
                   <td className="px-5 py-3 text-ink-muted">{user.email}</td>
                   <td className="px-5 py-3">
                     {user.status === 'pending' ? (
-                      <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600">
-                        pending
-                      </span>
+                      <div className="space-y-0.5">
+                        <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600">
+                          pending
+                        </span>
+                        {user.createdAt && (
+                          <p className="text-xs text-ink-dim">
+                            auto-deletes in {daysRemainingUntilAutoDeletion(user.createdAt)}d unless approved
+                          </p>
+                        )}
+                      </div>
                     ) : (
                       <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
                         active
                       </span>
                     )}
+                  </td>
+                  <td className="px-5 py-3 text-ink-muted">
+                    {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : 'Never'}
                   </td>
                   <td className="px-5 py-3">
                     <select

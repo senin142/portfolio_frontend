@@ -6,9 +6,12 @@ export interface AuthUser {
   email: string;
   name: string;
   role: Role;
-  // Only present on rows from GET /users (admin) — a logged-in user's own
-  // /auth/me response omits it since only 'active' accounts can ever log in.
+  // status/createdAt/lastLoginAt are only present on rows from GET /users
+  // (admin) — a logged-in user's own /auth/me response omits them since only
+  // 'active' accounts can ever log in.
   status?: UserStatus;
+  createdAt?: string;
+  lastLoginAt?: string | null;
 }
 
 export interface Tag {

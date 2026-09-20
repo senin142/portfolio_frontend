@@ -38,9 +38,13 @@ Admin (JWT-gated via `ProtectedRoute`):
 - `/dashboard/articles/new`, `/dashboard/articles/[id]` — create/edit form.
 - `/dashboard/audit-log` — admin-only (`allow={['admin']}`), tables `GET /audit-log`.
 - `/users` — admin-only user list + role management, plus a status badge
-  (`pending`/`active`) and an Approve action for pending accounts (public
-  signups land `pending` — see `backend/CLAUDE.md`'s Account lifecycle
-  section). **Note:** this route is at `/users`, not `/dashboard/users` —
+  (`pending`/`active`), a "Last login" column, and an Approve action for
+  pending accounts (public signups land `pending` — see `backend/CLAUDE.md`'s
+  Account lifecycle section). Pending rows also show an auto-delete countdown
+  computed by `lib/pending-account.ts` — **that's a display-only mirror of
+  the backend's day-math, not authoritative**; the backend's
+  `UserCleanupService` is the actual source of truth for when an account gets
+  deleted. **Note:** this route is at `/users`, not `/dashboard/users` —
   don't assume it's nested under dashboard when linking to it or reading the
   README, which describes it more loosely. (Yes, `/dashboard/audit-log` and
   `/users` are inconsistent with each other — `/users` predates this doc; new
