@@ -14,18 +14,36 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
-      await signup(email, password, name);
+      const message = await signup(email, password, name);
+      setSuccessMessage(message);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Something went wrong');
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (successMessage) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-paper px-4">
+        <div className="fixed inset-x-0 top-0"><PortfolioNote /></div>
+        <div className="fixed right-4 top-14"><ThemeToggle /></div>
+        <div className="card w-full max-w-sm space-y-4 p-7 text-center">
+          <h1 className="text-xl font-semibold text-ink">Account created</h1>
+          <p className="text-sm text-ink-muted">{successMessage}</p>
+          <Link href="/login" className="btn-primary block w-full">
+            Go to login
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -34,7 +52,9 @@ export default function SignupPage() {
       <div className="fixed right-4 top-14"><ThemeToggle /></div>
       <form onSubmit={handleSubmit} className="card w-full max-w-sm space-y-4 p-7">
         <h1 className="text-xl font-semibold text-ink">Sign up</h1>
-        <p className="text-sm text-ink-muted">New accounts are created as editors. An admin can promote you later.</p>
+        <p className="text-sm text-ink-muted">
+          New accounts are created as editors, pending admin approval before you can log in.
+        </p>
         {error && <p className="error-banner">{error}</p>}
         <div>
           <label className="field-label">Name</label>
@@ -55,7 +75,7 @@ export default function SignupPage() {
           <input
             type="password"
             required
-            minLength={8}
+            minLength={10}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="field-input"
