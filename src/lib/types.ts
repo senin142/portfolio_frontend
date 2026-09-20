@@ -1,10 +1,14 @@
 export type Role = 'admin' | 'editor';
+export type UserStatus = 'pending' | 'active';
 
 export interface AuthUser {
   id: string;
   email: string;
   name: string;
   role: Role;
+  // Only present on rows from GET /users (admin) — a logged-in user's own
+  // /auth/me response omits it since only 'active' accounts can ever log in.
+  status?: UserStatus;
 }
 
 export interface Tag {

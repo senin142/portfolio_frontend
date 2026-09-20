@@ -9,7 +9,10 @@ interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, name: string) => Promise<void>;
+  // Returns a status message instead of logging in — public signup now lands
+  // 'pending' and needs admin approval before it can log in (no tokens are
+  // issued at signup time). See backend/CLAUDE.md's Authorization section.
+  signup: (email: string, password: string, name: string) => Promise<string>;
   logout: () => void;
 }
 
@@ -45,15 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signup(email: string, password: string, name: string) {
-    const res = await api.post<{ accessToken: string; refreshToken: string; user: AuthUser }>('/auth/signup', {
+    const res = await api.post<{ pending: boolean; message: string }>('/auth/signup', {
       email,
       password,
       name,
     });
-    setToken(res.accessToken);
-    setRefreshToken(res.refreshToken);
-    setUser(res.user);
-    router.push('/dashboard');
+    return res.message;
   }
 
   function logout() {

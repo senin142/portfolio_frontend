@@ -37,21 +37,29 @@ Admin (JWT-gated via `ProtectedRoute`):
 - `/dashboard` — article list, search, publish/unpublish toggle, delete.
 - `/dashboard/articles/new`, `/dashboard/articles/[id]` — create/edit form.
 - `/dashboard/audit-log` — admin-only (`allow={['admin']}`), tables `GET /audit-log`.
-- `/users` — admin-only user list + role management. **Note:** this route is at
-  `/users`, not `/dashboard/users` — don't assume it's nested under dashboard when
-  linking to it or reading the README, which describes it more loosely. (Yes,
-  `/dashboard/audit-log` and `/users` are inconsistent with each other — `/users`
-  predates this doc; new admin pages should follow `/dashboard/audit-log`'s
-  nesting, not `/users`'s.)
+- `/users` — admin-only user list + role management, plus a status badge
+  (`pending`/`active`) and an Approve action for pending accounts (public
+  signups land `pending` — see `backend/CLAUDE.md`'s Account lifecycle
+  section). **Note:** this route is at `/users`, not `/dashboard/users` —
+  don't assume it's nested under dashboard when linking to it or reading the
+  README, which describes it more loosely. (Yes, `/dashboard/audit-log` and
+  `/users` are inconsistent with each other — `/users` predates this doc; new
+  admin pages should follow `/dashboard/audit-log`'s nesting, not `/users`'s.)
 
 ## Architecture
 
 **Auth state**: `lib/auth-context.tsx` (`AuthProvider`/`useAuth`) is the only
 source of truth for the current user — a React context, not a global store. On
 mount it calls `GET /auth/me` with whatever token is in `localStorage` and clears
-it on failure. `login`/`signup` store both `accessToken` and `refreshToken` in
-`localStorage` (keys `cms_token` / `cms_refresh_token`, see `lib/api.ts`) and push
-to `/dashboard`.
+it on failure. `login` stores both `accessToken` and `refreshToken` in
+`localStorage` (keys `cms_token` / `cms_refresh_token`, see `lib/api.ts`) and
+pushes to `/dashboard`. **`signup` does NOT log in** — public signups land
+`status: 'pending'` on the backend (needs admin approval via `/users` before
+they can log in), so `signup()` returns the backend's confirmation *message*
+string instead of tokens; the signup page shows it and links to `/login`
+rather than navigating to `/dashboard`. Don't "fix" this to auto-login — it's
+the backend's actual behavior (see `backend/CLAUDE.md`'s Account lifecycle
+section), not a bug here.
 
 **Route protection is client-side only** (`ProtectedRoute` redirects if
 `!user` or role isn't in `allow`) — this is a UX convenience, **not** the actual

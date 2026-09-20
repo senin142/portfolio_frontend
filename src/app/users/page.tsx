@@ -22,6 +22,11 @@ function UsersContent() {
     setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
   }
 
+  async function approve(user: AuthUser) {
+    const updated = await api.patch<AuthUser>(`/users/${user.id}/approve`);
+    setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
+  }
+
   async function remove(user: AuthUser) {
     if (!confirm(`Delete ${user.name}?`)) return;
     await api.delete(`/users/${user.id}`);
@@ -40,6 +45,7 @@ function UsersContent() {
               <tr>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Email</th>
+                <th className="px-5 py-3 font-medium">Status</th>
                 <th className="px-5 py-3 font-medium">Role</th>
                 <th className="px-5 py-3 font-medium"></th>
               </tr>
@@ -49,6 +55,17 @@ function UsersContent() {
                 <tr key={user.id} className="border-b border-line last:border-0 hover:bg-black/[0.015] dark:hover:bg-white/[0.03]">
                   <td className="px-5 py-3 font-medium text-ink">{user.name}</td>
                   <td className="px-5 py-3 text-ink-muted">{user.email}</td>
+                  <td className="px-5 py-3">
+                    {user.status === 'pending' ? (
+                      <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600">
+                        pending
+                      </span>
+                    ) : (
+                      <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600">
+                        active
+                      </span>
+                    )}
+                  </td>
                   <td className="px-5 py-3">
                     <select
                       value={user.role}
@@ -60,9 +77,16 @@ function UsersContent() {
                     </select>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button onClick={() => remove(user)} className="text-xs font-medium text-red-500 hover:text-red-600">
-                      Delete
-                    </button>
+                    <div className="flex items-center justify-end gap-3">
+                      {user.status === 'pending' && (
+                        <button onClick={() => approve(user)} className="text-xs font-medium text-brand hover:underline">
+                          Approve
+                        </button>
+                      )}
+                      <button onClick={() => remove(user)} className="text-xs font-medium text-red-500 hover:text-red-600">
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
