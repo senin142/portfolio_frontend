@@ -36,9 +36,13 @@ Admin (JWT-gated via `ProtectedRoute`):
 - `/login`, `/signup`
 - `/dashboard` — article list, search, publish/unpublish toggle, delete.
 - `/dashboard/articles/new`, `/dashboard/articles/[id]` — create/edit form.
+- `/dashboard/audit-log` — admin-only (`allow={['admin']}`), tables `GET /audit-log`.
 - `/users` — admin-only user list + role management. **Note:** this route is at
   `/users`, not `/dashboard/users` — don't assume it's nested under dashboard when
-  linking to it or reading the README, which describes it more loosely.
+  linking to it or reading the README, which describes it more loosely. (Yes,
+  `/dashboard/audit-log` and `/users` are inconsistent with each other — `/users`
+  predates this doc; new admin pages should follow `/dashboard/audit-log`'s
+  nesting, not `/users`'s.)
 
 ## Architecture
 
@@ -100,11 +104,6 @@ data-consistency logic, just triggers a "new article" banner / refetch.
   readable by any script that gets XSS execution. No known XSS vector exists
   today (verified clean in the red-team pass), but this is why one matters more
   here than it would with cookie-based auth if that ever changes.
-- No client-side file-size pre-check before upload — `ImageUploader` lets you
-  pick an oversized file and only learns it's too big after the request starts.
-  Open, cheap fix (check `file.size` before calling `api.uploadImage`).
-- No frontend page renders the backend's `GET /audit-log` — the endpoint works
-  and is admin-gated, there's just no UI for it yet.
 
 ## Keeping this file updated
 

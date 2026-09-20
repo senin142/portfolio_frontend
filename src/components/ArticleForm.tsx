@@ -101,6 +101,9 @@ export default function ArticleForm({
 
 // Save the article first to get an id, then attach an image to it — matches how the
 // rest of the app is wired (media rows have a required articleId foreign key).
+// Keep in sync with MAX_UPLOAD_BYTES in backend/src/media/media.controller.ts.
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
 function ImageUploader({ articleId }: { articleId: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [resize, setResize] = useState(true);
@@ -135,7 +138,14 @@ function ImageUploader({ articleId }: { articleId: string }) {
   }, [articleId]);
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
-    setFile(e.target.files?.[0] ?? null);
+    const picked = e.target.files?.[0] ?? null;
+    if (picked && picked.size > MAX_UPLOAD_BYTES) {
+      setUploadError(`Image is ${(picked.size / 1024 / 1024).toFixed(1)}MB — max is ${MAX_UPLOAD_BYTES / 1024 / 1024}MB`);
+      setFile(null);
+      e.target.value = '';
+      return;
+    }
+    setFile(picked);
     setUploadError(null);
   }
 

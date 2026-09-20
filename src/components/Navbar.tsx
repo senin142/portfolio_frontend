@@ -25,6 +25,11 @@ export default function Navbar() {
             Users
           </Link>
         )}
+        {user?.role === 'admin' && (
+          <Link href="/dashboard/audit-log" className="text-sm text-ink-muted transition-colors hover:text-ink">
+            Audit Log
+          </Link>
+        )}
       </div>
       <div className="flex items-center gap-4">
         <span className="font-mono text-xs text-ink-dim">

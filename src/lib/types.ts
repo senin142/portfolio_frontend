@@ -42,3 +42,15 @@ export interface MediaUsage {
   capBytes: number;
   percentUsed: number;
 }
+
+export interface AuditLogEntry {
+  id: string;
+  action: string;
+  actorUserId: string | null;
+  actorEmail: string | null;
+  targetType: string | null;
+  targetId: string | null;
+  metadata: Record<string, unknown> | null;
+  ipAddress: string | null;
+  createdAt: string;
+}
