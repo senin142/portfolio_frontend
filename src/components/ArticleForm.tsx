@@ -77,7 +77,7 @@ export default function ArticleForm({
           placeholder="product, announcements"
           className="field-input"
         />
-        <p className="mt-1.5 text-xs text-ink-dim">Comma-separated. Powers "similar articles" on the public site.</p>
+        <p className="mt-1.5 text-xs text-ink-dim">Comma-separated. Powers &ldquo;similar articles&rdquo; on the public site.</p>
       </div>
 
       <label className="flex items-center gap-2 text-sm text-ink">
