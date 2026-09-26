@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
@@ -12,6 +12,14 @@ import ThemeToggle from '@/components/ThemeToggle';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export default function PublicHome() {
+  return (
+    <Suspense fallback={null}>
+      <PublicHomeContent />
+    </Suspense>
+  );
+}
+
+function PublicHomeContent() {
   const searchParams = useSearchParams();
   const [articles, setArticles] = useState<PublicArticle[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
