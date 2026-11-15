@@ -31,6 +31,20 @@ export class ApiError extends Error {
   }
 }
 
+// fetch() only rejects when no HTTP response arrives at all: the backend is
+// unreachable, still waking from Render's free-tier sleep, or CORS blocked the
+// origin. Surface that as an ApiError (status 0) so pages show a real message
+// instead of their generic fallback.
+const UNREACHABLE_MESSAGE = "Can't reach the server — it may be waking up. Try again in a moment.";
+
+async function send(url: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch {
+    throw new ApiError(UNREACHABLE_MESSAGE, 0);
+  }
+}
+
 // The access token is short-lived (15m) by design — refresh tokens exist so a leaked
 // access token expires fast while the user still doesn't need to re-log-in constantly.
 // Concurrent 401s (e.g. a page firing several requests on mount) share one in-flight
@@ -77,7 +91,7 @@ async function request<T>(path: string, options: RequestInit = {}, isRetry = fal
   };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const res = await send(`${API_URL}${path}`, { ...options, headers });
 
   if (res.status === 401 && !isRetry && getRefreshToken()) {
     const refreshed = await refreshOnce();
@@ -105,7 +119,7 @@ export const api = {
     const token = getToken();
     const formData = new FormData();
     formData.append('file', file);
-    const res = await fetch(`${API_URL}/media/articles/${articleId}?resize=${resize}`, {
+    const res = await send(`${API_URL}/media/articles/${articleId}?resize=${resize}`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       body: formData,
@@ -123,9 +137,10 @@ export const api = {
   },
   async fetchImage(articleId: string, isRetry = false): Promise<Blob | null> {
     const token = getToken();
-    const res = await fetch(`${API_URL}/media/articles/${articleId}`, {
+    const res = await send(`${API_URL}/media/articles/${articleId}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-    });
+    }).catch(() => null);
+    if (!res) return null;
     if (res.status === 401 && !isRetry && getRefreshToken()) {
       const refreshed = await refreshOnce();
       if (refreshed) return api.fetchImage(articleId, true);
