@@ -40,8 +40,8 @@ function UsersContent() {
       <main className="mx-auto max-w-3xl px-6 py-10">
         <h1 className="mb-6 text-2xl font-semibold text-ink">Users</h1>
         {error && <p className="error-banner mb-4">{error}</p>}
-        <div className="card overflow-hidden">
-          <table className="w-full text-left text-sm">
+        <div className="card overflow-x-auto">
+          <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-line bg-black/[0.02] text-ink-dim dark:bg-white/[0.04]">
               <tr>
                 <th className="px-5 py-3 font-medium">Name</th>
@@ -80,6 +80,7 @@ function UsersContent() {
                   </td>
                   <td className="px-5 py-3">
                     <select
+                      aria-label={`Role for ${user.name}`}
                       value={user.role}
                       onChange={(e) => changeRole(user, e.target.value as Role)}
                       className="rounded-lg border border-line px-2 py-1.5 text-xs focus:border-brand focus:outline-none"

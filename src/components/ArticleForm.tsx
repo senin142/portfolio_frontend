@@ -54,8 +54,8 @@ export default function ArticleForm({
       </div>
 
       <div>
-        <label className="field-label">Title</label>
-        <input required value={title} onChange={(e) => setTitle(e.target.value)} className="field-input" />
+        <label htmlFor="article-title" className="field-label">Title</label>
+        <input id="article-title" required value={title} onChange={(e) => setTitle(e.target.value)} className="field-input" />
       </div>
 
       <div>
@@ -70,8 +70,9 @@ export default function ArticleForm({
       </div>
 
       <div>
-        <label className="field-label">Tags</label>
+        <label htmlFor="article-tags" className="field-label">Tags</label>
         <input
+          id="article-tags"
           value={tagsText}
           onChange={(e) => setTagsText(e.target.value)}
           placeholder="product, announcements"

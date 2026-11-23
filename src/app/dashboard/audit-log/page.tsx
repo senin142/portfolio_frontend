@@ -30,8 +30,8 @@ function AuditLogContent() {
           </p>
         </div>
         {error && <p className="error-banner mb-4">{error}</p>}
-        <div className="card overflow-hidden">
-          <table className="w-full text-left text-sm">
+        <div className="card overflow-x-auto">
+          <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-line bg-black/[0.02] text-ink-dim dark:bg-white/[0.04]">
               <tr>
                 <th className="px-5 py-3 font-medium">When</th>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Navbar from '@/components/Navbar';
+import LoadingNote from '@/components/LoadingNote';
 import { api } from '@/lib/api';
 import { Article, MediaUsage } from '@/lib/types';
 
@@ -76,19 +77,23 @@ function DashboardContent() {
           </div>
         )}
 
-        <div className="mb-4 flex flex-wrap gap-3">
+        <div className="mb-4">
+          <label htmlFor="article-search" className="field-label">
+            Search by title
+          </label>
           <input
-            placeholder="Search title…"
+            id="article-search"
+            type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="field-input mt-0 w-64"
+            className="field-input w-64"
           />
         </div>
 
         {error && <p className="error-banner mb-4">{error}</p>}
 
-        <div className="card overflow-hidden">
-          <table className="w-full text-left text-sm">
+        <div className="card overflow-x-auto">
+          <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-line bg-black/[0.02] text-ink-dim dark:bg-white/[0.04]">
               <tr>
                 <th className="px-5 py-3 font-medium">Title</th>
@@ -101,8 +106,8 @@ function DashboardContent() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-8 text-center font-mono text-xs text-ink-dim">
-                    Loading…
+                  <td colSpan={5} className="px-5 py-8 text-center">
+                    <LoadingNote label="Loading articles…" />
                   </td>
                 </tr>
               ) : articles.length === 0 ? (

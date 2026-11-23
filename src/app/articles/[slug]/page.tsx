@@ -7,6 +7,8 @@ import { api, API_URL } from '@/lib/api';
 import { PublicArticle } from '@/lib/types';
 import PortfolioNote from '@/components/PortfolioNote';
 import ThemeToggle from '@/components/ThemeToggle';
+import LoadingNote from '@/components/LoadingNote';
+import RelatedSlider from '@/components/RelatedSlider';
 
 export default function PublicArticlePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -32,7 +34,7 @@ export default function PublicArticlePage() {
     );
   }
 
-  if (!article) return <p className="p-8 font-mono text-xs text-ink-dim">Loading…</p>;
+  if (!article) return <LoadingNote label="Loading article…" className="p-8" />;
 
   return (
     <div className="min-h-screen bg-paper">
@@ -67,23 +69,7 @@ export default function PublicArticlePage() {
         <p className="mt-8 whitespace-pre-wrap font-serif text-[17px] leading-[1.8] text-ink/90">{article.body}</p>
 
         {article.related && article.related.length > 0 && (
-          <div className="mt-14 border-t border-line pt-7">
-            <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-ink-dim">Similar articles</h2>
-            <div className="mt-4 space-y-3">
-              {article.related.map((r) => (
-                <Link key={r.id} href={`/articles/${r.slug}`} className="card block p-4 transition-shadow hover:shadow-md">
-                  <div className="font-medium text-ink">{r.title}</div>
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {r.tags.map((t) => (
-                      <span key={t.id} className="badge bg-black/[0.04] text-ink-muted dark:bg-white/[0.08]">
-                        {t.name}
-                      </span>
-                    ))}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+          <RelatedSlider articles={article.related} currentTags={article.tags} />
         )}
       </main>
     </div>

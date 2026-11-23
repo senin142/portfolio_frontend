@@ -8,6 +8,7 @@ import { api } from '@/lib/api';
 import { PublicArticle, Tag } from '@/lib/types';
 import PortfolioNote from '@/components/PortfolioNote';
 import ThemeToggle from '@/components/ThemeToggle';
+import LoadingNote from '@/components/LoadingNote';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -25,7 +26,8 @@ function PublicHomeContent() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [activeTag, setActiveTag] = useState<string | null>(searchParams.get('tag'));
   const [loading, setLoading] = useState(true);
-  const [liveNotice, setLiveNotice] = useState<string | null>(null);
+  const [liveNotice, setLiveNotice] = useState('');
+  const [showNotice, setShowNotice] = useState(false);
 
   function load(tag: string | null) {
     setLoading(true);
@@ -51,8 +53,9 @@ function PublicHomeContent() {
     const socket: Socket = io(API_URL, { transports: ['websocket'] });
     socket.on('article.published', (payload: { title: string }) => {
       setLiveNotice(`New article published: "${payload.title}"`);
+      setShowNotice(true);
       load(activeTag);
-      setTimeout(() => setLiveNotice(null), 6000);
+      setTimeout(() => setShowNotice(false), 6000);
     });
     return () => {
       socket.disconnect();
@@ -78,13 +81,17 @@ function PublicHomeContent() {
         </div>
       </header>
 
+      {/* Fixed toast rather than an in-flow banner, so it never pushes the page
+          down; only transform/opacity animate, and reduced motion gets a plain fade. */}
       <div
-        className={`overflow-hidden bg-neutral-950 text-white transition-all duration-300 ${
-          liveNotice ? 'max-h-16 py-2.5' : 'max-h-0 py-0'
+        role="status"
+        aria-live="polite"
+        className={`pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4 transition-[transform,opacity] duration-200 motion-reduce:translate-y-0 motion-reduce:transition-opacity ${
+          showNotice ? 'translate-y-0 opacity-100 ease-out' : 'translate-y-2 opacity-0 ease-in'
         }`}
       >
-        <p className="text-center font-mono text-xs tracking-wide text-brand-light">
-          <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand-light align-middle" />
+        <p className="rounded-full border border-white/10 bg-neutral-950 px-4 py-2.5 text-center font-mono text-xs tracking-wide text-brand-light">
+          <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand-light align-middle motion-reduce:animate-none" />
           {liveNotice}
         </p>
       </div>
@@ -130,7 +137,7 @@ function PublicHomeContent() {
 
         <div className="mt-8 space-y-4">
           {loading ? (
-            <p className="font-mono text-xs text-ink-dim">Loading…</p>
+            <LoadingNote label="Loading articles…" />
           ) : articles.length === 0 ? (
             <p className="font-mono text-xs text-ink-dim">No articles found.</p>
           ) : (
@@ -138,12 +145,18 @@ function PublicHomeContent() {
               <Link key={article.id} href={`/articles/${article.slug}`} className="card group block p-6 transition-shadow hover:shadow-md">
                 <h2 className="font-serif text-xl text-ink transition-colors group-hover:text-brand">{article.title}</h2>
                 <p className="mt-2 line-clamp-2 text-[14.5px] leading-relaxed text-ink-muted">{article.body}</p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {article.tags.map((t) => (
-                    <span key={t.id} className="badge bg-black/[0.04] text-ink-muted dark:bg-white/[0.08]">
-                      {t.name}
-                    </span>
-                  ))}
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {article.tags.map((t) => (
+                      <span key={t.id} className="badge bg-black/[0.04] text-ink-muted dark:bg-white/[0.08]">
+                        {t.name}
+                      </span>
+                    ))}
+                  </div>
+                  {/* The whole card is the link; this is its visible label. */}
+                  <span className="text-sm font-medium text-brand underline-offset-2 group-hover:underline">
+                    Read full article →
+                  </span>
                 </div>
               </Link>
             ))

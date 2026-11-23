@@ -57,13 +57,15 @@ export default function SignupPage() {
         </p>
         {error && <p className="error-banner">{error}</p>}
         <div>
-          <label className="field-label">Name</label>
-          <input required value={name} onChange={(e) => setName(e.target.value)} className="field-input" />
+          <label htmlFor="signup-name" className="field-label">Name</label>
+          <input id="signup-name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} className="field-input" />
         </div>
         <div>
-          <label className="field-label">Email</label>
+          <label htmlFor="signup-email" className="field-label">Email</label>
           <input
+            id="signup-email"
             type="email"
+            autoComplete="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -71,9 +73,11 @@ export default function SignupPage() {
           />
         </div>
         <div>
-          <label className="field-label">Password</label>
+          <label htmlFor="signup-password" className="field-label">Password</label>
           <input
+            id="signup-password"
             type="password"
+            autoComplete="new-password"
             required
             minLength={10}
             value={password}

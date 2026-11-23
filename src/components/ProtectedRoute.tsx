@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Role } from '@/lib/types';
+import LoadingNote from './LoadingNote';
 
 export default function ProtectedRoute({
   children,
@@ -25,7 +26,11 @@ export default function ProtectedRoute({
   }, [user, loading, allow, router]);
 
   if (loading || !user || (allow && !allow.includes(user.role))) {
-    return <div className="flex h-screen items-center justify-center font-mono text-sm text-ink-dim">Loading…</div>;
+    return (
+      <div className="flex h-screen items-center justify-center px-6 text-center">
+        <LoadingNote />
+      </div>
+    );
   }
 
   return <>{children}</>;
