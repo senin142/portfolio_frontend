@@ -11,13 +11,18 @@ codebase.
 
 ## What it does
 
-- **Public site** (`/`) — lists published articles, filterable by tag, with a live "New article
-  published" banner pushed over WebSocket whenever the admin publishes something (no page refresh
-  needed).
-- **Article detail** (`/articles/[slug]`) — full article plus a "similar articles" section ranked
-  by shared tags.
-- **Admin** (`/login`, `/dashboard/*`) — JWT-authenticated article CRUD with a tags field,
-  publish/unpublish, and (for admins) user role management.
+- **Public site** (`/`): lists published articles, filterable by tag. When an article is
+  published, a "New article published" banner arrives over WebSocket without a page refresh.
+- **Article detail** (`/articles/[slug]`): the full article plus a "similar articles" section
+  ranked by shared tags.
+- **Sign up** (`/signup`): new accounts are created as editors and can't log in until an admin
+  approves them.
+- **Admin** (`/login`, `/dashboard/*`): article CRUD with tags, publish/unpublish, and one image
+  per article (optional server-side resize, 10MB upload limit, with a storage usage bar).
+- **Admins only**: user management at `/users` (approve signups, change roles, see last login and
+  the auto-delete countdown for stale pending accounts) and an audit log at
+  `/dashboard/audit-log` covering auth events and destructive or privileged actions.
+- Light/dark theme toggle.
 
 ## Running it locally
 
@@ -33,12 +38,13 @@ Runs at `http://localhost:3000`.
 
 Seeded accounts (password for both: `password123`):
 
-- `admin@example.com` — admin
-- `editor@example.com` — editor
+- `admin@example.com` (admin)
+- `editor@example.com` (editor)
 
 ## Notes
 
-- Auth state lives in a small React context that stores the JWT in `localStorage` and attaches it
-  to API requests — a production app would use an httpOnly cookie instead.
+- Auth uses a short-lived (15 min) access token plus a rotating refresh token. Both are kept in
+  `localStorage`; `src/lib/api.ts` refreshes once on a 401, so expiry is invisible in normal use.
+  A production app would keep the tokens in httpOnly cookies instead.
 - The public homepage connects to the backend's Socket.IO gateway directly over
   `NEXT_PUBLIC_API_URL` for live publish notifications.

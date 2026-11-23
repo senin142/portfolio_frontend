@@ -96,7 +96,7 @@ function PublicHomeContent() {
           A small CMS I built to demonstrate role-gated publishing, tag-based content discovery, and
           real-time updates pushed over WebSocket the moment something publishes — no page refresh.
           Not a real company;{' '}
-          <a href="https://github.com/senin142/portfolio1.0" target="_blank" rel="noopener" className="font-medium text-brand underline underline-offset-2">
+          <a href="https://senin142.github.io/portfolio1.0/" target="_blank" rel="noopener" className="font-medium text-brand underline underline-offset-2">
             see the rest of my portfolio ↗
           </a>
           .

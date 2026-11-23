@@ -1,4 +1,4 @@
-const PORTFOLIO_URL = 'https://github.com/senin142/portfolio1.0';
+const PORTFOLIO_URL = 'https://senin142.github.io/portfolio1.0/';
 
 export default function PortfolioNote() {
   return (
